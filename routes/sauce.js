@@ -3,15 +3,16 @@ const router    = express.Router();
 
 const sauceCtrl = require('../controllers/sauce');
 const auth      = require('../middleware/auth');
+const multer    = require('../middleware/multer-config');
 
 // ADD SAUCE IN CONSOLE.LOG
-router.post('/', auth, sauceCtrl.createSauceLog);
+// router.post('/', auth, multer, sauceCtrl.createSauceLog);
 
 // ADD SAUCE IN MONGODB
-// router.post('/', auth, sauceCtrl.createSauce);
+router.post('/', auth, multer, sauceCtrl.createSauce);
 
 // MODIFY SAUCE
-router.put('/:id', auth, sauceCtrl.modifySauce);
+router.put('/:id', auth, multer, sauceCtrl.modifySauce);
 
 // DELETE ONE SAUCE
 router.delete('/:id', auth, sauceCtrl.deleteOneSauce);
@@ -20,9 +21,9 @@ router.delete('/:id', auth, sauceCtrl.deleteOneSauce);
 router.get('/:id', auth, sauceCtrl.getOneSauce);
 
 // GET ALL SAUCES
-// router.get('/', auth, sauceCtrl.getAllSauces);
+router.get('/', auth, sauceCtrl.getAllSauces);
 
 // GET ALL SAUCES TEST
-router.get('/', auth, sauceCtrl.getAllSaucesTest);
+// router.get('/', auth, sauceCtrl.getAllSaucesTest);
 
 module.exports = router;
