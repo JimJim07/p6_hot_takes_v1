@@ -5,10 +5,7 @@ const sauceCtrl = require('../controllers/sauce');
 const auth      = require('../middleware/auth');
 const multer    = require('../middleware/multer-config');
 
-// ADD SAUCE IN CONSOLE.LOG
-// router.post('/', auth, multer, sauceCtrl.createSauceLog);
-
-// ADD SAUCE IN MONGODB
+// CREATE SAUCE
 router.post('/', auth, multer, sauceCtrl.createSauce);
 
 // MODIFY SAUCE
@@ -23,7 +20,7 @@ router.get('/:id', auth, sauceCtrl.getOneSauce);
 // GET ALL SAUCES
 router.get('/', auth, sauceCtrl.getAllSauces);
 
-// GET ALL SAUCES TEST
-// router.get('/', auth, sauceCtrl.getAllSaucesTest);
+// POST LIKE
+router.post('/:id/like', auth, sauceCtrl.postLike);
 
 module.exports = router;

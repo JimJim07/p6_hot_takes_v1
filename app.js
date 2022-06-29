@@ -5,10 +5,10 @@ const path        = require('path');
 const userRoutes  = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
+const mongodb     = require('./mongoDB');
+
 // MongoDB
-mongoose.connect('mongodb+srv://<identifiant>:<password>@cluster0.sdyji.mongodb.net/?retryWrites=true&w=majority',
-{ useNewUrlParser: true,
-useUnifiedTopology: true })
+mongoose.connect( mongodb.pass, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connexion à MongoDB réussie !'))
 .catch(() => console.log('Connexion à MongoDB échouée !'));
     
