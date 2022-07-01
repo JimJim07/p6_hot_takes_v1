@@ -2,7 +2,7 @@ const Sauce = require('../models/Sauce');
 const fs    = require('fs');
 
 // CREATE SAUCE
-exports.createSauce = (req, res, next) => {
+exports.createSauce = (req, res) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     delete sauceObject._userId;
@@ -24,7 +24,7 @@ exports.createSauce = (req, res, next) => {
 };
 
 // MODIFY SAUCE
-exports.modifySauce = (req, res, next) => {
+exports.modifySauce = (req, res) => {
     const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -36,12 +36,9 @@ exports.modifySauce = (req, res, next) => {
             if (sauce.userId != req.auth.userId) {
                 res.status(401).json({ message : 'Not authorized'});
             } else {
-                const filename = sauce.imageUrl.split('/images/')[1];
-                fs.unlink(`images/${filename}`, () => {
                     Sauce.updateOne({ _id: req.params.id}, { ...sauceObject, _id: req.params.id})
                     .then(() => res.status(200).json({message : 'Sauce modifié!'}))
                     .catch(error => res.status(401).json({ error }));
-                });
             }
         })
         .catch((error) => {
@@ -50,7 +47,7 @@ exports.modifySauce = (req, res, next) => {
 };
 
 // DELETE ONE SAUCE
-exports.deleteOneSauce = (req, res, next) => {
+exports.deleteOneSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => {
             if (sauce.userId != req.auth.userId) {
@@ -70,23 +67,24 @@ exports.deleteOneSauce = (req, res, next) => {
 };
 
 // GET ONE SAUCE
-exports.getOneSauce = (req, res, next) => {
+exports.getOneSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
       .then(sauce => res.status(200).json(sauce))
       .catch(error => res.status(404).json({ error }));
 };
 
 // GET ALL SAUCES
-exports.getAllSauces = (req, res, next) => {
+exports.getAllSauces = (req, res) => {
     Sauce.find()
       .then(sauces => res.status(200).json(sauces))
       .catch(error => res.status(400).json({ error }));
 };
 
 // liked
-exports.postLike = (req, res, next) => {
+exports.postLikeSauce = (req, res) => {
     console.log(req.body);
-    Sauce.findOne({_id: req.params.id})
-      .then(sauces => res.status(200).json(sauces))
-      .catch(error => res.status(400).json({ error }));
+    
+    Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+    .catch(error => res.status(400).json({ error }));
 };

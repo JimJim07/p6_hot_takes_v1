@@ -21,6 +21,6 @@ router.get('/:id', auth, sauceCtrl.getOneSauce);
 router.get('/', auth, sauceCtrl.getAllSauces);
 
 // POST LIKE
-router.post('/:id/like', auth, sauceCtrl.postLike);
+router.post('/:id/like', auth, sauceCtrl.postLikeSauce);
 
 module.exports = router;
