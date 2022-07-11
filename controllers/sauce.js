@@ -21,12 +21,10 @@ exports.createSauce = (req, res) => {
 // MODIFY SAUCE
 exports.modifySauce = (req, res) => {
     if (req.file) {
-        // si l'image est modifiée, il faut supprimer l'ancienne image dans le dossier /image
         Sauce.findOne({ _id: req.params.id })
             .then(sauce => {
                 const filename = sauce.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
-                    // une fois que l'ancienne image est supprimée dans le dossier /image, on peut mettre à jour le reste
                     const sauceObject = {
                         ...JSON.parse(req.body.sauce),
                         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -38,7 +36,6 @@ exports.modifySauce = (req, res) => {
             })
             .catch(error => res.status(500).json({ error }));
     } else {
-        // si l'image n'est pas modifiée
         const sauceObject = { ...req.body };
         Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
             .then(() => res.status(200).json({ message: 'Sauce modifiée!' }))
