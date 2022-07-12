@@ -1,12 +1,13 @@
-// Importation du package 'express'
-const express   = require('express');
+// Importation du package, du middleware et du controllers
+const express           = require('express');
+const passwordValidator = require('../middleware/password-validator')
+const userCtrl          = require('../controllers/user');
 // Création du router express
 const router    = express.Router();
 
-// Importation du controllers
-const userCtrl  = require('../controllers/user');
-
-router.post('/signup', userCtrl.signup);
+// SIGNUP USER
+router.post('/signup', passwordValidator, userCtrl.signup);
+// LOGIN USER
 router.post('/login', userCtrl.login);
 
 // Exportation du router
