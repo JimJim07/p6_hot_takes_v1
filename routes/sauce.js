@@ -1,6 +1,9 @@
+// Importation du package 'express'
 const express   = require('express');
+// Création du router express
 const router    = express.Router();
 
+// Importation du controllers et des middleware
 const sauceCtrl = require('../controllers/sauce');
 const auth      = require('../middleware/auth');
 const multer    = require('../middleware/multer-config');
@@ -23,4 +26,5 @@ router.get('/', auth, sauceCtrl.getAllSauces);
 // POST LIKE
 router.post('/:id/like', auth, sauceCtrl.postLikeSauce);
 
+// Exportation du router
 module.exports = router;
